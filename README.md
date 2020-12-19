@@ -1,4 +1,4 @@
-# Session based authorization from Nest.js
+# Session based WebSockets authorization for Nest.js
 
 This is a code sample for my [article](https://trejgun.github.io/articles/session-based-websocket-authorization-for-nestjs)
 
