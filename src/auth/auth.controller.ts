@@ -30,12 +30,6 @@ export class AuthController {
             <input type="password" name="password" />
             <input type="submit" />
           </form>
-          <p>or login with other providers</p>
-          <ul>
-            <li><a href="/auth/google" onClick="return handleclick(this)">google</a></li>
-            <li><a href="/auth/facebook" onClick="return handleclick(this)">facebook</a></li>
-            <li><a href="/auth/onelogin" onClick="return handleclick(this)">onelogin</a></li>
-          </ul>
         </body>
       </html>
     `;
