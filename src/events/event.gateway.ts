@@ -1,4 +1,4 @@
-import {Inject, Logger, LoggerService, UseGuards} from "@nestjs/common";
+import {Inject, Logger, LoggerService, UseGuards, UseInterceptors} from "@nestjs/common";
 import {
   MessageBody,
   OnGatewayConnection,
@@ -13,11 +13,14 @@ import {from, Observable} from "rxjs";
 import {map} from "rxjs/operators";
 import {Server, Socket} from "socket.io";
 
+import {Public} from "../common/decorators";
+import {UserEntity} from "../user/user.entity";
+import {SessionInterceptor} from "./interceptors/session";
 import {WsLocalGuard} from "./guards/ws";
 import {User} from "./decorators/user";
-import {UserEntity} from "../user/user.entity";
-import {Public} from "../common/decorators";
+import {Session} from "./decorators/session";
 
+@UseInterceptors(SessionInterceptor)
 @UseGuards(WsLocalGuard)
 @WebSocketGateway()
 export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -41,6 +44,14 @@ export class EventGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
   @SubscribeMessage("profile")
   plain(@User() userEntity: UserEntity): UserEntity {
     return userEntity;
+  }
+
+  @SubscribeMessage("session")
+  session(@Session() session: Record<string, any>): number {
+    if (!session.number) {
+      session.number = 0;
+    }
+    return ++session.number;
   }
 
   public afterInit(): void {
